@@ -44,6 +44,8 @@ func AdminGetDLQMessages(c *cli.Context) {
 
 	adminClient := cFactory.ServerAdminClient(c)
 	dlqType := getRequiredOption(c, FlagDLQType)
+	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	shardID := getRequiredIntOption(c, FlagShardID)
 	outputFile := getOutputFile(c.String(FlagOutputFilename))
 	defer outputFile.Close()
 
@@ -59,6 +61,8 @@ func AdminGetDLQMessages(c *cli.Context) {
 	paginationFunc := func(paginationToken []byte) ([]interface{}, []byte, error) {
 		resp, err := adminClient.ReadDLQMessages(ctx, &replicator.ReadDLQMessagesRequest{
 			Type:                  toQueueType(dlqType),
+			SourceCluster:         common.StringPtr(sourceCluster),
+			ShardID:               common.Int32Ptr(int32(shardID)),
 			InclusiveEndMessageID: lastMessageID,
 			MaximumPageSize:       common.Int32Ptr(defaultPageSize),
 			NextPageToken:         paginationToken,
@@ -102,6 +106,8 @@ func AdminPurgeDLQMessages(c *cli.Context) {
 	defer cancel()
 
 	dlqType := getRequiredOption(c, FlagDLQType)
+	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	shardID := getRequiredIntOption(c, FlagShardID)
 
 	var lastMessageID *int64
 	if c.IsSet(FlagLastMessageID) {
@@ -113,9 +119,11 @@ func AdminPurgeDLQMessages(c *cli.Context) {
 	adminClient := cFactory.ServerAdminClient(c)
 	if err := adminClient.PurgeDLQMessages(ctx, &replicator.PurgeDLQMessagesRequest{
 		Type:                  toQueueType(dlqType),
+		SourceCluster:         common.StringPtr(sourceCluster),
+		ShardID:               common.Int32Ptr(int32(shardID)),
 		InclusiveEndMessageID: lastMessageID,
 	}); err != nil {
-		ErrorAndExit("Failed to purge dlq", nil)
+		ErrorAndExit("Failed to purge dlq", err)
 	}
 	fmt.Println("Successfully purge DLQ Messages.")
 }
@@ -126,6 +134,8 @@ func AdminMergeDLQMessages(c *cli.Context) {
 	defer cancel()
 
 	dlqType := getRequiredOption(c, FlagDLQType)
+	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	shardID := getRequiredIntOption(c, FlagShardID)
 
 	var lastMessageID *int64
 	if c.IsSet(FlagLastMessageID) {
@@ -137,6 +147,8 @@ func AdminMergeDLQMessages(c *cli.Context) {
 	adminClient := cFactory.ServerAdminClient(c)
 	request := &replicator.MergeDLQMessagesRequest{
 		Type:                  toQueueType(dlqType),
+		SourceCluster:         common.StringPtr(sourceCluster),
+		ShardID:               common.Int32Ptr(int32(shardID)),
 		InclusiveEndMessageID: lastMessageID,
 		MaximumPageSize:       common.Int32Ptr(defaultPageSize),
 	}
