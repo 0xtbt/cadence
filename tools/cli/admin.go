@@ -668,10 +668,6 @@ func newAdminDLQCommands() []cli.Command {
 					Name:  FlagTargetCluster,
 					Usage: "The cluster where the task is generated",
 				},
-				cli.StringFlag{
-					Name:  FlagShardID,
-					Usage: "The shard where the task is located",
-				},
 				cli.IntFlag{
 					Name:  FlagShardIDWithAlias,
 					Usage: "ShardID",
@@ -706,10 +702,6 @@ func newAdminDLQCommands() []cli.Command {
 					Name:  FlagTargetCluster,
 					Usage: "The cluster where the task is generated",
 				},
-				cli.StringFlag{
-					Name:  FlagShardID,
-					Usage: "The shard where the task is located",
-				},
 				cli.IntFlag{
 					Name:  FlagShardIDWithAlias,
 					Usage: "ShardID",
@@ -735,10 +727,6 @@ func newAdminDLQCommands() []cli.Command {
 				cli.StringFlag{
 					Name:  FlagTargetCluster,
 					Usage: "The cluster where the task is generated",
-				},
-				cli.StringFlag{
-					Name:  FlagShardID,
-					Usage: "The shard where the task is located",
 				},
 				cli.IntFlag{
 					Name:  FlagShardIDWithAlias,

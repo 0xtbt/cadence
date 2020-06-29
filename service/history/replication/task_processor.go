@@ -389,7 +389,7 @@ func (p *taskProcessorImpl) processTaskOnce(replicationTask *r.ReplicationTask) 
 			metrics.ReplicationTaskFetcherScope,
 			metrics.TargetClusterTag(p.sourceCluster),
 		).IncCounter(metrics.ReplicationTasksApplied)
-		p.metricsClient.Scope(scope).RecordTimer(metrics.TaskProcessingLatency, time.Now().Sub(startTime))
+		p.metricsClient.Scope(scope).RecordTimer(metrics.ReplicatorLatency, time.Now().Sub(startTime))
 	}
 
 	return err
