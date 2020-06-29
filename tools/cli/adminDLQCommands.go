@@ -44,7 +44,7 @@ func AdminGetDLQMessages(c *cli.Context) {
 
 	adminClient := cFactory.ServerAdminClient(c)
 	dlqType := getRequiredOption(c, FlagDLQType)
-	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	sourceCluster := getRequiredOption(c, FlagTargetCluster)
 	shardID := getRequiredIntOption(c, FlagShardID)
 	outputFile := getOutputFile(c.String(FlagOutputFilename))
 	defer outputFile.Close()
@@ -106,7 +106,7 @@ func AdminPurgeDLQMessages(c *cli.Context) {
 	defer cancel()
 
 	dlqType := getRequiredOption(c, FlagDLQType)
-	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	sourceCluster := getRequiredOption(c, FlagTargetCluster)
 	shardID := getRequiredIntOption(c, FlagShardID)
 
 	var lastMessageID *int64
@@ -134,7 +134,7 @@ func AdminMergeDLQMessages(c *cli.Context) {
 	defer cancel()
 
 	dlqType := getRequiredOption(c, FlagDLQType)
-	sourceCluster := getRequiredGlobalOption(c, FlagTargetCluster)
+	sourceCluster := getRequiredOption(c, FlagTargetCluster)
 	shardID := getRequiredIntOption(c, FlagShardID)
 
 	var lastMessageID *int64
